@@ -1,10 +1,12 @@
-import { DateTime } from "luxon";
+const { DateTime } = require("luxon");
 
-export default function (eleventyConfig) {
+module.exports = function (eleventyConfig) {
+  // Static assets
   eleventyConfig.addPassthroughCopy({ "styles.css": "styles.css" });
   eleventyConfig.addPassthroughCopy({ "script.js": "script.js" });
   eleventyConfig.addPassthroughCopy({ "admin": "admin" });
 
+  // Custom collection: fragments
   eleventyConfig.addCollection("fragments", (collectionApi) => {
     return collectionApi.getFilteredByTag("posts").filter((item) => {
       const tags = item.data.tags || [];
@@ -12,6 +14,7 @@ export default function (eleventyConfig) {
     });
   });
 
+  // Date formatting
   eleventyConfig.addFilter("readableDate", (dateObj) => {
     if (!dateObj) return "";
     return DateTime.fromJSDate(dateObj, { zone: "utc" }).toFormat("dd LLL yyyy");
@@ -21,9 +24,9 @@ export default function (eleventyConfig) {
     dir: {
       input: "src",
       includes: "_includes",
-      output: "_site"
+      output: "_site",
     },
     markdownTemplateEngine: "njk",
-    htmlTemplateEngine: "njk"
+    htmlTemplateEngine: "njk",
   };
-}
+};
