@@ -2,7 +2,7 @@ backend:
   name: github
   repo: google-design777/nadias-study
   branch: main
-  base_url: https://nadias-study.pages.dev/
+  base_url: https://nadias-study.pages.dev
   auth_endpoint: api/auth
 
 media_folder: "src/assets/uploads"
