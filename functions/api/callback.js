@@ -45,10 +45,12 @@ export async function onRequestGet(context) {
         var payload = { token: ${JSON.stringify(token)}, provider: 'github' };
         var msg = 'authorization:github:success:' + JSON.stringify(payload);
 
-        // Try to notify the opener (Decap opens OAuth in a popup).
+        // Notify the opener (Decap opens OAuth in a popup).
+        // Some builds are picky about targetOrigin, so we send twice.
         try {
           if (window.opener) {
             window.opener.postMessage(msg, window.location.origin);
+            window.opener.postMessage(msg, '*');
           }
         } catch (e) {}
 
@@ -56,19 +58,17 @@ export async function onRequestGet(context) {
         try {
           if (window.parent) {
             window.parent.postMessage(msg, window.location.origin);
+            window.parent.postMessage(msg, '*');
           }
         } catch (e) {}
 
-        // Give the opener a moment to receive the token, then close/redirect.
+        // Give the opener time to store the token, then close this window.
         setTimeout(function(){
           try { window.close(); } catch (e) {}
-          try { window.location.replace('/admin/'); } catch (e2) {
-            try { window.location.href = '/admin/'; } catch (e3) {}
-          }
-        }, 600);
+        }, 1200);
       })();
     </script>
-    Logging in…
+    Logging in… If this window doesn’t close, you can close it manually and return to <a href="/admin/">/admin</a>.
   </body>
 </html>`;
 
