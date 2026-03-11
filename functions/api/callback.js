@@ -59,11 +59,11 @@ export async function onRequestGet(context) {
           }
         } catch (e) {}
 
-        // If the window can't close (browser blocked), redirect back to /admin
+        // Try to close; if it doesn't close, immediately navigate back to /admin
         try { window.close(); } catch (e) {}
-        setTimeout(function(){
-          try { window.location.href = '/admin/'; } catch (e) {}
-        }, 250);
+        try { window.location.replace('/admin/'); } catch (e) {
+          try { window.location.href = '/admin/'; } catch (e2) {}
+        }
       })();
     </script>
     Logging in…
