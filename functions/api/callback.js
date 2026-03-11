@@ -42,7 +42,7 @@ export async function onRequestGet(context) {
   <body>
     <script>
       (function() {
-        var payload = { token: ${JSON.stringify(token)} };
+        var payload = { token: ${JSON.stringify(token)}, provider: 'github' };
         var msg = 'authorization:github:success:' + JSON.stringify(payload);
 
         // Try to notify the opener (Decap opens OAuth in a popup).
