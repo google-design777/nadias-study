@@ -1,0 +1,22 @@
+---
+layout: base.njk
+---
+
+<article class="reader">
+  <h1>{{ title }}</h1>
+  <div class="meta">{{ page.date | readableDate }}{% if mood %} • {{ mood }}{% endif %}</div>
+
+  {% if tags %}
+    <div class="tags" style="margin-bottom:16px">
+      {% for t in tags %}
+        {% if t != 'posts' %}<span class="tag">{{ t }}</span>{% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {{ content | safe }}
+
+  <div style="margin-top:22px" class="small">
+    <a href="/writing/">← Back to Writing</a>
+  </div>
+</article>

@@ -1,0 +1,41 @@
+---
+layout: base.njk
+title: Writing — Nadia
+permalink: /writing/index.html
+---
+
+<section class="hero" style="padding-bottom:0">
+  <h1>Writing</h1>
+  <p>Everything in one place. Search a phrase or open a post.</p>
+  <div class="controls">
+    <input id="q" class="input" type="search" placeholder="Search titles…" autocomplete="off" />
+  </div>
+</section>
+
+<section class="section">
+  <h2>All posts</h2>
+  <div class="grid two" id="writingList">
+    {% for post in collections.posts | reverse %}
+      {% include "card.njk" %}
+    {% else %}
+      <p class="small">No posts yet.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<script>
+  // simple client-side search by title
+  (function(){
+    const q = document.getElementById('q');
+    const cards = Array.from(document.querySelectorAll('#writingList .card'));
+    if(!q) return;
+    q.addEventListener('input', () => {
+      const term = q.value.trim().toLowerCase();
+      cards.forEach(c => {
+        const title = (c.querySelector('h3')?.innerText || '').toLowerCase();
+        c.style.display = (!term || title.includes(term)) ? '' : 'none';
+      });
+    });
+    q.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ q.value=''; q.dispatchEvent(new Event('input')); }});
+  })();
+</script>

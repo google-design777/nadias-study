@@ -1,0 +1,30 @@
+---
+layout: base.njk
+title: Fragments — Nadia
+permalink: /fragments/index.html
+---
+
+<section class="hero" style="padding-bottom:0">
+  <h1>Fragments</h1>
+  <p>Short thoughts, unfinished drafts, quick truths.</p>
+  <div class="controls">
+    <button class="btn" id="randomFragmentBtn" type="button">Open random fragment</button>
+  </div>
+</section>
+
+<section class="section">
+  <h2>All fragments</h2>
+  <div class="grid two">
+    {% for post in collections.fragments | reverse %}
+      {% include "card.njk" %}
+    {% else %}
+      <p class="small">No fragments yet.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<script>
+  window.__FRAGMENT_URLS__ = [
+    {% for post in collections.fragments %}"{{ post.url }}"{% if not loop.last %},{% endif %}{% endfor %}
+  ];
+</script>

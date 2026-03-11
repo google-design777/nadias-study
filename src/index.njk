@@ -1,0 +1,45 @@
+---
+layout: base.njk
+title: Nadia — Notes on life, meaning, and everything in between
+---
+
+<section class="hero">
+  <h1>Nadia</h1>
+  <p>Notes on life, meaning, and everything in between. A small study where I write to understand.</p>
+  <div class="controls">
+    <a class="btn" href="/writing/">Read latest</a>
+    <button class="btn" id="randomBtn" type="button">Open random</button>
+  </div>
+</section>
+
+{% set pinned = collections.posts | reverse | selectattr('data.pinned') %}
+{% set latest = collections.posts | reverse | rejectattr('data.pinned') | slice(0,6) %}
+
+<section class="section">
+  <h2>Start here</h2>
+  <div class="grid two">
+    {% for post in pinned %}
+      {% include "card.njk" %}
+    {% else %}
+      <p class="small">No pinned posts yet.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section">
+  <h2>Latest</h2>
+  <div class="grid two">
+    {% for post in latest %}
+      {% include "card.njk" %}
+    {% else %}
+      <p class="small">No posts yet.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<script>
+  // random post (built-time list)
+  window.__POST_URLS__ = [
+    {% for post in collections.posts %}"{{ post.url }}"{% if not loop.last %},{% endif %}{% endfor %}
+  ];
+</script>

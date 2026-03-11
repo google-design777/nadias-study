@@ -1,0 +1,26 @@
+backend:
+  name: github
+  repo: YOUR_GITHUB_USERNAME/YOUR_REPO_NAME
+  branch: main
+  base_url: https://YOUR_CLOUDFLARE_PAGES_DOMAIN
+  auth_endpoint: api/auth
+
+media_folder: "src/assets/uploads"
+public_folder: "/assets/uploads"
+
+collections:
+  - name: "posts"
+    label: "Posts"
+    folder: "src/posts"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+      - { label: "Pinned (Start here)", name: "pinned", widget: "boolean", default: false, required: false }
+      - { label: "Mood", name: "mood", widget: "string", required: false }
+      - { label: "Tags", name: "tags", widget: "list", default: ["Life"] }
+      - { label: "Excerpt", name: "excerpt", widget: "text", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
