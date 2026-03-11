@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About — Nadia</title>
+  <meta name="description" content="About Nadia." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;550;650&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <nav class="nav">
+      <a class="brand" href="index.html">Nadia</a>
+      <div class="links">
+        <a data-nav href="index.html">Home</a>
+        <a data-nav href="writing.html">Writing</a>
+        <a data-nav href="fragments.html">Fragments</a>
+        <a data-nav href="about.html">About</a>
+        <a data-nav href="contact.html">Contact</a>
+        <button class="btn" id="themeBtn" type="button">Theme</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <article class="reader">
+      <h1>About Nadia</h1>
+      <div class="meta">A short note</div>
+
+      <p>Hi, I’m Nadia.</p>
+      <p>I write about whatever I’m trying to understand—life, love, the mind, and the strange beauty of ordinary days.</p>
+      <p>This site is my small study: a place for essays, fragments, and unfinished thoughts that still feel honest.</p>
+
+      <p class="small">(You can edit this page anytime: <code>about.html</code>)</p>
+    </article>
+
+    <footer>
+      <div>© <span id="year"></span> Nadia</div>
+      <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
