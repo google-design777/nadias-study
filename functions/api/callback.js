@@ -48,22 +48,24 @@ export async function onRequestGet(context) {
         // Try to notify the opener (Decap opens OAuth in a popup).
         try {
           if (window.opener) {
-            window.opener.postMessage(msg, '*');
+            window.opener.postMessage(msg, window.location.origin);
           }
         } catch (e) {}
 
         // Fallback: notify parent (in case it was opened in an iframe/tab)
         try {
           if (window.parent) {
-            window.parent.postMessage(msg, '*');
+            window.parent.postMessage(msg, window.location.origin);
           }
         } catch (e) {}
 
-        // Try to close; if it doesn't close, immediately navigate back to /admin
-        try { window.close(); } catch (e) {}
-        try { window.location.replace('/admin/'); } catch (e) {
-          try { window.location.href = '/admin/'; } catch (e2) {}
-        }
+        // Give the opener a moment to receive the token, then close/redirect.
+        setTimeout(function(){
+          try { window.close(); } catch (e) {}
+          try { window.location.replace('/admin/'); } catch (e2) {
+            try { window.location.href = '/admin/'; } catch (e3) {}
+          }
+        }, 600);
       })();
     </script>
     Logging in…
