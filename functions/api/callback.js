@@ -42,12 +42,28 @@ export async function onRequestGet(context) {
   <body>
     <script>
       (function() {
-        function send() {
-          var msg = 'authorization:github:success:' + JSON.stringify({ token: ${JSON.stringify(token)} });
-          (window.opener || window.parent).postMessage(msg, window.location.origin);
-          window.close();
-        }
-        send();
+        var payload = { token: ${JSON.stringify(token)} };
+        var msg = 'authorization:github:success:' + JSON.stringify(payload);
+
+        // Try to notify the opener (Decap opens OAuth in a popup).
+        try {
+          if (window.opener) {
+            window.opener.postMessage(msg, '*');
+          }
+        } catch (e) {}
+
+        // Fallback: notify parent (in case it was opened in an iframe/tab)
+        try {
+          if (window.parent) {
+            window.parent.postMessage(msg, '*');
+          }
+        } catch (e) {}
+
+        // If the window can't close (browser blocked), redirect back to /admin
+        try { window.close(); } catch (e) {}
+        setTimeout(function(){
+          try { window.location.href = '/admin/'; } catch (e) {}
+        }, 250);
       })();
     </script>
     Logging in…
