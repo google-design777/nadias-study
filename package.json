@@ -8,5 +8,10 @@
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1",
     "luxon": "^3.5.0"
+  },
+  "dependencies": {
+    "@portabletext/to-html": "^5.0.2",
+    "@sanity/client": "^7.17.0",
+    "dotenv": "^17.3.1"
   }
 }

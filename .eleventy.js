@@ -1,12 +1,14 @@
 const { DateTime } = require("luxon");
+const { toHTML } = require("@portabletext/to-html");
 
 module.exports = function (eleventyConfig) {
   // Static assets
   eleventyConfig.addPassthroughCopy({ "styles.css": "styles.css" });
   eleventyConfig.addPassthroughCopy({ "script.js": "script.js" });
   eleventyConfig.addPassthroughCopy({ "admin": "admin" });
+
+  // Cloudflare Pages routing helpers
   eleventyConfig.addPassthroughCopy({ "_routes.json": "_routes.json" });
-  // Cloudflare Pages redirects file (keeps /api/* from being rewritten by SPA fallbacks)
   eleventyConfig.addPassthroughCopy({ "_redirects": "_redirects" });
 
   // Custom collection: fragments
@@ -17,10 +19,21 @@ module.exports = function (eleventyConfig) {
     });
   });
 
+  // Portable Text (Sanity) -> HTML
+  eleventyConfig.addFilter("portableTextToHtml", (value) => {
+    if (!value) return "";
+    try {
+      return toHTML(value);
+    } catch (e) {
+      return "";
+    }
+  });
+
   // Date formatting
   eleventyConfig.addFilter("readableDate", (dateObj) => {
     if (!dateObj) return "";
-    return DateTime.fromJSDate(dateObj, { zone: "utc" }).toFormat("dd LLL yyyy");
+    const dt = typeof dateObj === "string" ? DateTime.fromISO(dateObj) : DateTime.fromJSDate(dateObj);
+    return dt.setZone("utc").toFormat("dd LLL yyyy");
   });
 
   return {

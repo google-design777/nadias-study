@@ -1,0 +1,31 @@
+---
+pagination:
+  data: sanityPosts
+  size: 1
+  alias: post
+permalink: "/posts/{{ post.slug }}/index.html"
+layout: "base.njk"
+---
+
+<article class="reader">
+  <div class="meta">{{ post.date | readableDate }}{% if post.mood %} • {{ post.mood }}{% endif %}</div>
+  <h1>{{ post.title }}</h1>
+
+  {% if post.tags and post.tags.length %}
+    <div class="tags" style="margin: 14px 0 18px">
+      {% for t in post.tags %}<span class="tag">{{ t }}</span>{% endfor %}
+    </div>
+  {% endif %}
+
+  {% if post.excerpt %}
+    <p class="small" style="margin-top: 0">{{ post.excerpt }}</p>
+  {% endif %}
+
+  <div class="prose">
+    {{ post.body | portableTextToHtml | safe }}
+  </div>
+
+  <div style="margin-top:22px" class="small">
+    <a href="/writing/">← Back to Writing</a>
+  </div>
+</article>

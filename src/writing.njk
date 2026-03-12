@@ -15,8 +15,17 @@ permalink: /writing/index.html
 <section class="section">
   <h2>All posts</h2>
   <div class="grid two" id="writingList">
-    {% for post in collections.posts | reverse %}
-      {% include "card.njk" %}
+    {% for post in sanityPosts %}
+      <article class="card">
+        <h3><a href="/posts/{{ post.slug }}/">{{ post.title }}</a></h3>
+        <div class="meta">{{ post.date | readableDate }}{% if post.mood %} • {{ post.mood }}{% endif %}</div>
+        {% if post.excerpt %}<p class="small">{{ post.excerpt }}</p>{% endif %}
+        {% if post.tags and post.tags.length %}
+          <div class="tags">
+            {% for t in post.tags %}<span class="tag">{{ t }}</span>{% endfor %}
+          </div>
+        {% endif %}
+      </article>
     {% else %}
       <p class="small">No posts yet.</p>
     {% endfor %}
