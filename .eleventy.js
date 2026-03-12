@@ -5,6 +5,8 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "styles.css": "styles.css" });
   eleventyConfig.addPassthroughCopy({ "script.js": "script.js" });
   eleventyConfig.addPassthroughCopy({ "admin": "admin" });
+  // Cloudflare Pages redirects file (keeps /api/* from being rewritten by SPA fallbacks)
+  eleventyConfig.addPassthroughCopy({ "_redirects": "_redirects" });
 
   // Custom collection: fragments
   eleventyConfig.addCollection("fragments", (collectionApi) => {

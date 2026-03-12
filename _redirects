@@ -1,0 +1,2 @@
+# Prevent any SPA-style fallback from swallowing Decap OAuth functions
+/api/*  /api/:splat  200
