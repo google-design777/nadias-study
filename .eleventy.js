@@ -5,6 +5,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "styles.css": "styles.css" });
   eleventyConfig.addPassthroughCopy({ "script.js": "script.js" });
   eleventyConfig.addPassthroughCopy({ "admin": "admin" });
+  eleventyConfig.addPassthroughCopy({ "_routes.json": "_routes.json" });
   // Cloudflare Pages redirects file (keeps /api/* from being rewritten by SPA fallbacks)
   eleventyConfig.addPassthroughCopy({ "_redirects": "_redirects" });
 
