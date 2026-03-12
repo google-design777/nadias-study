@@ -3,7 +3,6 @@ export async function onRequestGet(context) {
   const url = new URL(request.url);
 
   const code = url.searchParams.get('code');
-  const state = url.searchParams.get('state');
 
   const clientId = env.GITHUB_CLIENT_ID;
   const clientSecret = env.GITHUB_CLIENT_SECRET;
@@ -16,6 +15,7 @@ export async function onRequestGet(context) {
     return new Response('Missing code', { status: 400 });
   }
 
+  // Exchange code for token
   const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
     method: 'POST',
     headers: {
@@ -37,28 +37,24 @@ export async function onRequestGet(context) {
   }
 
   // Decap CMS expects a page that posts the token back to the opener.
-  // Include the original `state` (Decap uses it to validate the flow).
+  // Keep payload minimal for maximum compatibility.
   const html = `<!doctype html>
 <html>
   <body>
     <script>
       (function() {
-        var payload = { token: ${JSON.stringify(token)}, provider: 'github', state: ${JSON.stringify(state)} };
+        var payload = { token: ${JSON.stringify(token)}, provider: 'github' };
         var msg = 'authorization:github:success:' + JSON.stringify(payload);
 
-        try {
-          if (window.opener) {
-            window.opener.postMessage(msg, window.location.origin);
-            window.opener.postMessage(msg, '*');
-          }
-        } catch (e) {}
+        function send(target) {
+          try {
+            target.postMessage(msg, '*');
+            target.postMessage(msg, window.location.origin);
+          } catch (e) {}
+        }
 
-        try {
-          if (window.parent) {
-            window.parent.postMessage(msg, window.location.origin);
-            window.parent.postMessage(msg, '*');
-          }
-        } catch (e) {}
+        if (window.opener) send(window.opener);
+        if (window.parent && window.parent !== window) send(window.parent);
 
         setTimeout(function(){
           try { window.close(); } catch (e) {}
